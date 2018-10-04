@@ -19,17 +19,37 @@ static int get_sign(char const **str)
     return (mul);
 }
 
+static int is_limit(int mul, int ret, int unit)
+{
+    if (mul == 1 && INT_MAX / 10 <= ret) {
+        if (INT_MAX / 10 < ret)
+            return (0);
+        else if (INT_MAX / 10 == ret && INT_MAX % 10 < unit)
+            return (0);
+        else
+            return (1);
+    }
+    else if (mul == -1 && INT_MIN / -10 <= ret) {
+        if (INT_MIN / -10 < ret)
+            return (0);
+        else if (INT_MIN / -10 == ret && INT_MIN % 10 * -1 < unit)
+            return (0);
+        else
+            return (1);
+    }
+    else
+        return (1);
+}
+
 int my_getnbr(char const *str)
 {
     int mul = get_sign(&str);
     int ret = 0;
     int i = 0;
 
+    printf("%i, %i\n", INT_MAX, INT_MIN);
     while (str[i] >= '0'  && str[i] <= '9') {
-        if (mul == 1 && (INT_MAX / 10 <= ret && INT_MAX % 10 < str[i] - '0'))
-            return (0);
-        else if (mul == -1 &&
-                (INT_MIN / -10 <= ret && INT_MIN % 10 * -1 < str[i] - '0'))
+        if (is_limit(mul, ret, str[i] - '0') == 0)
             return (0);
         else
             ret = ret * 10 + str[i] - '0';            
