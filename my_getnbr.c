@@ -47,7 +47,6 @@ int my_getnbr(char const *str)
     int ret = 0;
     int i = 0;
 
-    printf("%i, %i\n", INT_MAX, INT_MIN);
     while (str[i] >= '0'  && str[i] <= '9') {
         if (is_limit(mul, ret, str[i] - '0') == 0)
             return (0);
